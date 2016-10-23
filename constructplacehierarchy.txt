@@ -1,0 +1,26 @@
+PREFIX crm: <http://erlangen-crm.org/current/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+
+CONSTRUCT
+    {
+    ?place crm:P89_falls_within ?place1 .
+    ?place1 crm:P89_falls_within ?place2 .
+    ?place2 crm:P89_falls_within ?place3 .
+    }
+WHERE
+  {
+
+
+  ?place a crm:E53_Place  .
+  ?place1 a crm:E53_Place  .
+  ?place2 a crm:E53_Place  .
+  ?place3 a crm:E53_Place  .
+
+
+  ?place skos:broader ?place1 .
+  ?place1 skos:broader ?place2 .
+  ?place2 skos:broader ?place3 .
+
+  FILTER NOT EXISTS { ?aplace skos:broader ?place }
+}

@@ -1,0 +1,33 @@
+PREFIX crm: <http://erlangen-crm.org/current/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+
+CONSTRUCT
+    {
+    ?place rdfs:label ?combine .
+
+    }
+
+WHERE
+    {
+
+
+  ?place a crm:E53_Place  .
+  ?place1 a crm:E53_Place  .
+  ?place2 a crm:E53_Place  .
+  ?place3 a crm:E53_Place  .
+
+
+  ?place skos:broader ?place1 .
+  ?place skos:prefLabel ?placelabel .
+  ?place1 skos:broader ?place2 .
+  ?place1 skos:prefLabel ?placelabel1 .
+  ?place2 skos:broader ?place3 .
+  ?place2 skos:prefLabel ?placelabel2 .
+  ?place3 skos:prefLabel ?placelabel3 .
+
+  BIND(concat(str(?placelabel),';',str(?placelabel1),';',str(?placelabel2),';',str(?placelabel3)) as ?combine)
+
+  FILTER NOT EXISTS { ?aplace skos:broader ?place }
+    }

@@ -1,0 +1,25 @@
+
+from lxml import etree
+
+doc = etree.parse(r'k:\researchspace\placesconstruct.xml')
+
+root = doc.getroot()
+results = root[1]
+output = open(r'k:\researchspace\places.ttl','a')
+print(r'PREFIX thesIdentifier: <http://collection.britishmuseum.org/id/>',file=output)
+print(r'PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>',file=output)
+
+line = ''
+for result in results:
+    for bind in result:
+        for triple in bind:
+
+            line = line + triple.text + " "
+    line = line.replace('http://erlangen-crm.org/current/', 'crm:')
+    line = line.replace('http://collection.britishmuseum.org/id/place/','thesIdentifier:')
+    print(line + ' .\n', end="", file=output)
+
+    line = ''
+
+output.close()
+
